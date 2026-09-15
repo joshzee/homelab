@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+  namespace: renovate
+spec:
+  schedule: "@hourly"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - name: renovate
+              image: renovate/renovate:44.82.0
+              args:
+                - joshzee/zbook-cluster
+              envFrom:
+                - secretRef:
+                    name: renovate-container-env
+                - configMapRef:
+                    name: renovate-configmap
+          restartPolicy: Never
