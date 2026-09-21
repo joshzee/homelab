@@ -16,7 +16,7 @@ spec:
           automountServiceAccountToken: false
           containers:
             - name: renovate
-              image: renovate/renovate:44.82.0
+              image: renovate/renovate:44.104.2
               args:
                 - joshzee/zbook-cluster
               envFrom:
