@@ -18,7 +18,7 @@ spec:
             - name: renovate
               image: renovate/renovate:44.104.2
               args:
-                - joshzee/zbook-cluster
+                - joshzee/homelab
               envFrom:
                 - secretRef:
                     name: renovate-container-env
