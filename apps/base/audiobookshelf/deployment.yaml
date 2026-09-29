@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audiobookshelf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audiobookshelf
+  template:
+    metadata:
+      labels:
+        app: audiobookshelf
+    spec:
+      # securityContext:
+      #   runAsNonRoot: true
+      #   seccompProfile:
+      #     type: RuntimeDefault
+      containers:
+        - name: audiobookshelf
+          image: ghcr.io/advplyr/audiobookshelf:2.36.1
+          ports:
+            - name: http
+              containerPort: 3005
+          envFrom:
+            - configMapRef:
+              name: audiobookshelf-config
+      #     volumeMounts:
+      #
+      #     securityContext:
+      #       allowPrivilegeEscalation: false
+      #       capabilities:
+      #         drop:
+      #           - ALL
+      # volumes:
+      #   - name: audiobookshelf-data
+      #     persistentVolumeClaim:
+      #       claimName: audiobookshelf-data-pvc
