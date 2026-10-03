@@ -4,6 +4,8 @@ metadata:
   name: audiobookshelf
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: audiobookshelf
@@ -24,15 +26,38 @@ spec:
               containerPort: 3005
           envFrom:
             - configMapRef:
-                name: audiobookshelf-config
-      #     volumeMounts:
-      #
+                name: audiobookshelf-configmap
+          volumeMounts:
+            - name: audiobookshelf-config
+              mountPath: /config
+            
+            - name: audiobookshelf-metadata
+              mountPath: /metadata
+            
+            - name: audiobookshelf-audiobooks
+              mountPath: /audiobooks
+            
+            - name: audiobookshelf-podcasts
+              mountPath: /podcasts
+
       #     securityContext:
       #       allowPrivilegeEscalation: false
       #       capabilities:
       #         drop:
       #           - ALL
-      # volumes:
-      #   - name: audiobookshelf-data
-      #     persistentVolumeClaim:
-      #       claimName: audiobookshelf-data-pvc
+      volumes:
+        - name: audiobookshelf-config
+          persistentVolumeClaim:
+            claimName: audiobookshelf-config-pvc
+        
+        - name: audiobookshelf-metadata
+          persistentVolumeClaim:
+            claimName: audiobookshelf-metadata-pvc
+        
+        - name: audiobookshelf-audiobooks
+          persistentVolumeClaim:
+            claimName: audiobookshelf-audiobooks-pvc
+        
+        - name: audiobookshelf-podcasts
+          persistentVolumeClaim:
+            claimName: audiobookshelf-podcasts-pvc
