@@ -6,7 +6,6 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
-    rollingUpdate: null
   selector:
     matchLabels:
       app: audiobookshelf
@@ -15,10 +14,13 @@ spec:
       labels:
         app: audiobookshelf
     spec:
-      # securityContext:
-      #   runAsNonRoot: true
-      #   seccompProfile:
-      #     type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+        fsGroup: 1000 # Node group ID
+        runAsUser: 1000 # Node user ID
+        runAsGroup: 1000 # Node group ID
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: audiobookshelf
           image: ghcr.io/advplyr/audiobookshelf:2.36.1
@@ -28,6 +30,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: audiobookshelf-configmap
+          
           volumeMounts:
             - name: audiobookshelf-config
               mountPath: /config
@@ -41,11 +44,11 @@ spec:
             - name: audiobookshelf-podcasts
               mountPath: /podcasts
 
-      #     securityContext:
-      #       allowPrivilegeEscalation: false
-      #       capabilities:
-      #         drop:
-      #           - ALL
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
       volumes:
         - name: audiobookshelf-config
           persistentVolumeClaim:
