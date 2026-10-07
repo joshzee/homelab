@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloudflared
-  namespace: linkding
+  namespace: audiobookshelf
 spec:
   replicas: 2
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:latest
+          image: cloudflare/cloudflared:2026.10.0
           args:
             - tunnel
             - --config
@@ -50,16 +50,16 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloudflared
-  namespace: linkding
+  namespace: audiobookshelf
 data:
   config.yaml: |
-    tunnel: ldzb
+    tunnel: d8160d9d-87da-4008-bd3d-9908c4f54b4d
     credentials-file: /etc/cloudflared/creds/credentials.json
 
     metrics: 0.0.0.0:2000
     no-autoupdate: true
 
     ingress:
-      - hostname: linkding.joshlabs.me
-        service: http://linkding:9090
+      - hostname: abs.joshlabs.me
+        service: http://audiobookshelf:3005
       - service: http_status:404
