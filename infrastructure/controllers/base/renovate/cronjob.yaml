@@ -16,7 +16,7 @@ spec:
           automountServiceAccountToken: false
           containers:
             - name: renovate
-              image: renovate/renovate:44.104.2
+              image: renovate/renovate:44.149.2
               args:
                 - joshzee/homelab
               envFrom:
