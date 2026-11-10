@@ -102,10 +102,17 @@ The backup automation must minimise this interruption and report its duration.
 
 ## Persistent workload inventory
 
-| Namespace | Workload | Persistent data | Quiescing action |
-|---|---|---|---|
-| `linkding` | `deployment/linkding` | Linkding application database and data | Scale to zero |
-| `audiobookshelf` | `deployment/audiobookshelf` | Configuration, metadata, audiobooks and podcasts | Scale to zero |
+| Namespace | Workload | PVC | Storage class | Quiescing action |
+|---|---|---|---|---|
+| `linkding` | `deployment/linkding` | `linkding-data-pvc` | `local-path` | Scale Deployment to zero |
+| `audiobookshelf` | `deployment/audiobookshelf` | `audiobookshelf-audiobooks-pvc` | `local-path-retain` | Scale Deployment to zero |
+| `audiobookshelf` | `deployment/audiobookshelf` | `audiobookshelf-config-pvc` | `local-path-retain` | Scale Deployment to zero |
+| `audiobookshelf` | `deployment/audiobookshelf` | `audiobookshelf-metadata-pvc` | `local-path-retain` | Scale Deployment to zero |
+| `audiobookshelf` | `deployment/audiobookshelf` | `audiobookshelf-podcasts-pvc` | `local-path-retain` | Scale Deployment to zero |
+
+The monitoring namespace currently has no PVCs. Historical monitoring data is
+therefore ephemeral and is not included as persistent application data in this
+backup.
 
 Every new PVC must be added to this inventory before it is considered
 protected.
