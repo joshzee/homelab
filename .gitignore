@@ -4,3 +4,13 @@ kubeconfig
 .env.*
 !.env.example
 *.log
+
+# Local backup and recovery artifacts
+backups/
+*.bundle
+*.tar.gz
+*.tar.gz.age
+*.sha256
+SHA256SUMS*
+recovery-secrets/
+*sops-age-keys*
